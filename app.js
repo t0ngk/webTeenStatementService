@@ -19,6 +19,7 @@ const statementSchema = new mongoose.Schema({
   status: String,
   type: String,
   amount: Number,
+  createdAt: Date,
 });
 
 const Statement = mongoose.model("Statement", statementSchema);
@@ -26,7 +27,7 @@ const Statement = mongoose.model("Statement", statementSchema);
 const app = express();
 const port = 3000;
 
-app.use(cors());
+// app.use(cors());
 app.use(express.json());
 
 app.post("/statement", async (req, res) => {
@@ -35,6 +36,7 @@ app.post("/statement", async (req, res) => {
   const payload = {
     userId,
     ...req.body,
+    createdAt: new Date(),
   };
   try {
     const statement = new Statement(payload);
