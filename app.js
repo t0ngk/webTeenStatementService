@@ -17,10 +17,8 @@ const statementSchema = new mongoose.Schema({
   userId: String,
   price: Number,
   status: String,
-  item: {
-    type: { type: String },
-    amount: Number,
-  },
+  type: String,
+  amount: Number,
 });
 
 const Statement = mongoose.model("Statement", statementSchema);
@@ -38,8 +36,13 @@ app.post("/statement", async (req, res) => {
     userId,
     ...req.body,
   };
-  const statement = new Statement(payload);
-  await statement.save();
+  try {
+    const statement = new Statement(payload);
+    await statement.save();
+  } catch (error) {
+    console.log(error);
+    res.send("Error" + error.message);
+  }
   res.send("Statement created!");
 });
 
